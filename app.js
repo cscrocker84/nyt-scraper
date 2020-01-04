@@ -36,7 +36,7 @@ app.set("view engine", "handlebars");
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/nyt_scraper";
 
 mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
-mongoose.set("useCreatedIndex", true)
+
 
 app.get("/", (req, res)=>{
     db.Article.find({}, (err, docs)=>{
