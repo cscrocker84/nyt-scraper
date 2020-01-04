@@ -18,7 +18,7 @@ const app = express();
 
 app.use(logger("dev"));
 // parse req.body as JSON
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({exteded: true}));
 app.use(express.json());
 // set public as static
 app.use(express.static("public"));
