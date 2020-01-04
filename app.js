@@ -92,3 +92,55 @@ app.get("/api/articles", function(req, res){
         res.send("Scrape Complete");
     });
 });
+
+app.put("/article/:id", (req, res)=>{
+    // console.log(update)
+    db.Article.findOneAndUpdate({_id: req.params.id}, {$set: {saved: true}})
+    .then(updatedArticle=> res.json(updatedArticle));
+});
+
+// route to delete single article
+app.delete("/article/:id", (req, res)=>{
+    db.Article.findOneAndDelete({_id: req.params.id}, (err, deleted)=>{
+        if(err) throw err;
+    });
+});
+
+// route to delete all articles
+app.get("/api/delete", (req, res)=>{
+    db.Article.remove({}, (err, removed)=>{
+        if(err) throw err;
+        res.json(removed)
+    });
+});
+
+// route to get a specific article's notes by its id
+app.get("/article/:id", (req, res)=>{
+    db.Article.findOne({_id: req.params.id})
+    // populate the articles notes
+    .populate("notes")
+    .then(notes=> res.json(notes))
+    .catch(err=>res.json(err));
+});
+
+// route to add a new note
+app.post("/article/:id", (req, res)=>{
+    db.Note.create(req.body)
+    .then(dbNote=>{
+        return db.Article.findOneAndUpdate({_id: req.params.id}, {$push:{notes: dbNote._id}}, {new: true});
+    })
+    .then(dbUser=>res.json(dbUser))
+    .catch(err=>res.json(err));
+});
+
+// route to delete note
+app.delete("/note/:id", (req, res)=>{
+    db.Note.findOneAndDelete({_id: req.params.id}, (err) =>{
+        if(err) throw err;
+    })
+})
+
+// Start the server
+app.listen(PORT, function() {
+    console.log("App running on port " + PORT + "!");
+  });
