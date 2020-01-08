@@ -33,7 +33,7 @@ app.engine(
 app.set("view engine", "handlebars");
 
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/nyt-scraper";
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/nyt_scraper";
 
 mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.set('useFindAndModify', false);
